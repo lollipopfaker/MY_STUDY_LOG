@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main()
+{
+	int a,b,c;
+	printf("从键盘输入两个整数，用空格隔开两个数：");
+	scanf("%d %d",&a,&b);
+	
+	if(a>b) c=a;
+	else c=b;
+	printf("%d和%d中较大值是：%d\n",a,b,c);
+	return 0;
+	
+}
