@@ -1,0 +1,26 @@
+#include<stdio.h>
+
+int main(void) {
+	int chNumb=0, numNumb=0, spaceNumb=0, otherNumb=0;
+	char a[200];
+	gets(a);
+	for (int i = 0; a[i] != '\0'; i++) {
+		if ((a[i] >= 'A' && a[i] <= 'Z') ||( a[i] >= 'a' && a[i] <= 'z')) {
+			chNumb++;
+		}
+		else if (a[i] >= '0' && a[i] <= '9') {
+			numNumb++;
+		}
+		else if (a[i] == ' ') {
+			spaceNumb++;
+		}
+		else {
+			otherNumb++;
+		}
+
+	}
+
+	printf("%d %d %d %d\n", chNumb, numNumb, spaceNumb, otherNumb);
+
+	return 0;
+}
