@@ -1,0 +1,23 @@
+/*   1+2+...+a + 1^2+2^2+...+b^2 + 1/1+1/2+...+1/c   */
+
+#include<stdio.h>
+
+int main(void) {
+	int a=0, b=0;
+	int Sa=0, Sb=0;
+	float Sc=0, c=0, sum=0;
+	scanf("%d%d%f", &a, &b, &c);
+	for (int i = 1; i <= a; i++) {
+		Sa += i;
+	}
+	for (int i = 1; i <= b; i++) {
+		Sb += i*i;
+	}
+	for (int i = 1; i <= c; i++) {
+		Sc += 1.0/i;
+	}
+	sum = Sa + Sb + Sc;
+	printf("%.2f", sum);
+	return 0;
+
+}
