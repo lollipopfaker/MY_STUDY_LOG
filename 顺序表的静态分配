@@ -1,0 +1,65 @@
+#include<stdio.h>
+
+#define SIZE 20
+//静态顺序表的创建
+typedef struct Sqlist {
+
+	int arr[SIZE];
+	int size;
+
+}LIST;
+//顺序表初始化
+void listInit(LIST *p) {
+	for (int i = 0; i < SIZE; i++) {
+		p->arr[i] = 0;
+	}
+	p->size = 0;
+}
+//顺序表输入
+void menu(void);
+void listIn(LIST *p) {
+	printf("请输入数据：\n");
+	scanf("%d", &p->arr[p->size]);
+	p->size++;
+	menu();
+
+}
+//顺序表输出
+void listOut(LIST p) {
+	printf("表里面的数据有：\n");
+	for (int i = 0; i < p.size; i++) {
+		printf("%d ", p.arr[i]);
+	}
+	menu();
+}
+
+void menu(void) {
+	printf("****************************\n");
+	printf("*请输入以下数字使用相应功能*\n");
+	printf("*      0：结束输入         *\n");
+	printf("*      1：输入数据         *\n");
+	printf("*      2：输出数据         *\n");
+	printf("****************************\n");
+}
+
+int main(void) {
+	LIST a;
+	listInit(&a);
+	menu();
+	int in = 1;
+	while (in != 0) {
+		scanf("%d", &in);
+		if (in == 1) {
+			listIn(&a);
+		}
+		else if (in == 2) {
+			listOut(a);
+		}
+		else if(in!=0) {
+			printf("输入有误\n");
+		}
+
+	}
+
+	return 0;
+}
