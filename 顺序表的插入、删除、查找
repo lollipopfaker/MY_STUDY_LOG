@@ -1,0 +1,163 @@
+#include<stdio.h>
+#define listMax 10
+//定义静态顺序表
+
+typedef struct {
+	int arr[listMax];
+	int length;
+
+}SqList;
+//操作菜单
+void menu(void) {
+	printf("************************************\n");
+	printf("*         0：结束操作              *\n");
+	printf("*         1：输入数据              *\n");
+	printf("*         2：输出数据              *\n");
+	printf("*         3：插入数据              *\n");
+	printf("*         4：删除数据              *\n");
+	printf("*         5：查找数据              *\n");
+	printf("************************************\n");
+}
+
+//初始化顺序表
+void initSqList(SqList* l) {
+	for (int i = 0; i < listMax; i++) {
+		l->arr[i] = 0;
+	}
+
+	l->length = 0;
+}
+//输入值
+void SqListIn(SqList* l) {
+	printf("请输入数据\n");
+	scanf("%d", &l->arr[l->length]);
+	l->length++;
+}
+//输出值
+void SqListOut(SqList l) {
+	for (int i = 0; i < l.length; i++) {
+		printf("%d ", l.arr[i]);
+	}
+
+	printf("\n");
+}
+//顺序表的插入
+bool SqListInsert(SqList* l, int i, int number) {
+	//将位序为i的元素及以后的元素向后移动一位
+	bool result = true;
+	if (i<1 || i>listMax) {
+		result = false;
+	}
+	else {
+		for (int j = l->length-1; j >= i - 1; j--) {
+			l->arr[j+1] = l->arr[j];
+		}
+		l->length++;
+	}
+
+	l->arr[i-1] = number;
+	return result;
+}
+//顺序表的删除
+bool SqListDelete(SqList* l, int i,int*q) {
+	*q = l->arr[i - 1];
+	bool result = true;
+	if (i > 0 && i <= l->length) {
+		for (int j = i; j < l->length; j++) {
+			l->arr[j - 1] = l->arr[j];
+		}
+		l->length--;
+	}
+	else {
+		result = false;
+	}
+
+	return result;
+
+}
+//顺序表的按位查找
+void SqListFindByBit(SqList l, int i) {
+	if (i > 0 && i <= l.length) {
+	printf("这个值为：%d\n", l.arr[i - 1]);
+	}
+	else {
+		printf("输入非法！\n");
+	}
+}
+//顺序表的按值查找
+void SqListFindByValue(SqList l, int number) {
+	printf("他们分别在第 ");
+	for (int i = 0; i < l.length; i++) {
+		if (l.arr[i] == number) {
+			printf("%d ", i+1);
+		}
+
+	}
+
+	printf("位\n");
+}
+
+
+
+int main(void) {
+	int x = 0;
+	SqList l;
+	initSqList(&l);
+	do {
+		menu();
+		scanf("%d", &x);
+		if (x == 1) {
+			SqListIn(&l);
+			
+		}
+		else if (x == 2) {
+			SqListOut(l);
+			
+		}
+		else if (x == 3) {
+			printf("请输入插入的位序和数据，用空格隔开\n");
+			int i, j;
+			scanf("%d %d", &i, &j);
+			SqListInsert(&l, i, j);
+			
+		}
+		else if (x == 4) {
+			int q, number;
+			printf("请输入要删除的数据的位序\n");
+			scanf("%d", &number);
+			SqListDelete(&l, number, &q);
+			
+		}
+		else if (x == 5) {
+			printf("按位查找请按1，按值查找请按2.\n");
+			int a;
+			scanf("%d", &a);
+			if (a == 1) {
+				int i;
+				printf("请输入位序：\n");
+				scanf("%d", &i);
+				SqListFindByBit(l, i);
+			}
+			else if (a == 2) {
+				printf("请输入值：");
+				int b;
+				scanf("%d", &b);
+				SqListFindByValue(l, b);
+			}
+			else {
+				printf("输入非法！\n");
+			}
+		}
+		else if(x!=0) {
+			printf("输入有误！\n");
+		}
+
+
+	} while (x != 0);
+
+	return 0;
+
+}
+
+
+
