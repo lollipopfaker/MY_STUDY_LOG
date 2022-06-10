@@ -1,0 +1,117 @@
+
+/*此代码实现单链表的定义、初始化、按位序前插和后插、按位查找、按值查找、从头创建、从尾创建*/
+
+//定义单链表
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct LNode {
+	struct LNode* next;
+	int data;
+}LNode, *LinkList;
+
+//找到链表的第i个位置
+
+LNode* linkListLocation(LinkList L, int i) {
+	for (int j = 0; j < i&&L->next!=0&&i>=0; j++) {
+		L = L->next;
+	}
+	return L;
+}
+
+
+
+//链表初始化(无头节点)
+//双重指针的作用是需要改变指针L所指的地方，所以要一个指针l指向指针L，如果没有取用符号是将l指向NULL，有取用符号是把L指向NULL！
+void InitLinkList(LinkList* l) {
+	
+	*l = NULL; 
+}
+//链表的初始化（有头节点）
+
+void InitList(LinkList* l) {
+	*l = (LinkList)malloc(sizeof(LNode));
+	(*l)->next = NULL;//->的优先级比*高，所以加括号
+}
+
+//链表的按位序后插
+void backInsert(LinkList* l, int i, int num) {
+	LNode* s = (LinkList)malloc(sizeof(LNode));
+	LNode* p = linkListLocation(*l, i);
+	s->data = num;
+	s->next = p->next;
+	p->next = s;
+}
+
+//链表的按位序前插
+
+void frontInsert(LinkList* l,int i,int num) {
+	LNode* s = (LNode*)malloc(sizeof(LNode));
+	LNode* p = linkListLocation(*l, i-1);
+	s->data = num;
+	s->next = p->next;
+	p->next = s;
+}
+//输出链表里面的所有元素
+void linkListprint(LinkList L) {
+	do {
+		printf("%d ", L->data);
+		L = L->next;
+	} while (L != NULL);
+}
+//链表的按位查找              
+int linkListFindByBit(LinkList l, int i) {
+	return linkListLocation(l, i)->data;
+	
+}
+
+//链表的按值查找
+void linkListFindByValue(LinkList l, int number) {
+	int index = 0;
+	printf("分别在第");
+	for (int i = 0; l->next != NULL;i++) {
+		l = l->next;
+		if (l->data == number) {
+			printf("%d ",i);
+			index++;
+		}
+		
+	}
+	printf("位\n");
+	printf("共有%d个\n",index);
+}
+//找到链表的最后一位
+LNode* linkListLastLocation(LinkList l) {
+	while (l->next != NULL) {
+		l = l->next;
+	}
+	return l;
+
+}
+
+//从尾创建
+void creatFromTheEnd(int number, LNode *PEnd) {
+	LNode* s = (LNode*)malloc(sizeof(LNode));
+	s->data = number;
+	s->next = NULL;
+	PEnd->next = s;
+	PEnd = s;
+}
+
+
+int main(void) {
+	LinkList L;
+	InitList(&L);
+	backInsert(&L, 1, 5);
+	backInsert(&L, 1, 4);
+	backInsert(&L, 1, 5);
+	backInsert(&L, 1, 4); 
+	backInsert(&L, 1, 4);
+	linkListFindByBit(L, 2);
+	linkListFindByValue(L, 4);
+
+	creatFromTheEnd(3, linkListLastLocation(L));
+
+	linkListprint(L);
+	
+	return 0;
+}
