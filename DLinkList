@@ -1,0 +1,183 @@
+/*本代码旨在实现双链表的创建、初始化、按位前插、后插、删除指定位置，删除整个链表，按位查找，按值查找
+由于单、双链表非常相似，所以在单链表里面发现的bug也会在此处解决，就不再做重复劳动浪费时间了*/
+
+#include<stdio.h>
+#include<stdlib.h>
+//双链表的创建
+typedef struct DNode {
+	int number;
+	struct DNode* prior, * next;
+}DNode,*DLinkList;
+	 
+//双链表的初始化
+void InitDLinkList(DLinkList *l) {//传入二重指针是为了修改DLinkList l的指向
+	(*l) = (DNode*)malloc(sizeof(DNode));
+	(*l)->next = NULL;
+	(*l)->prior = NULL;
+}
+
+//找到链表的第i个位置，返回0失败，1成功
+int DLinkListPosition(DLinkList l, int i, DNode** s) {
+	(*s) = l;
+	int result = 0;
+	if (i != 0) {
+		int j;
+		for (j = 0; j < i && (*s)->next != NULL; j++) {
+			(*s) = (*s)->next;
+			
+		}
+		if (j == i) {
+				result = 1;
+			}
+	}
+	else if(i==0) {
+		result = 1;
+	}
+	return result;
+}
+
+//在第i个位置之后插入，返回0失败，1成功
+int DLinkListBackInsert(DLinkList l, int i, int num) {
+	DNode* s;
+	int r = 0;
+	if (DLinkListPosition(l, i, &s)) {
+		DNode* a = malloc(sizeof(DNode));
+		a->number = num;
+		a->next = s->next;
+		if (s->next != NULL) {
+			s->next->prior = a;
+		}
+		a->prior = s;
+		s->next = a;
+		r = 1;
+	}
+	else {
+		printf("后插入失败\n");
+	}
+	return r;
+}
+
+//在第i个位置之前插入，返回0失败，1成功
+int DLinkListFrontInsert(DLinkList l, int i, int num) {
+	DNode* s;
+	int r = 0;
+	if (i == 0) {
+		printf("前插入失败\n");
+	}
+	else if (DLinkListPosition(l, i, &s)) {
+	DNode* a = (DNode*)malloc(sizeof(DNode));
+		a->number = num;
+		a->next = s;
+		a->prior = s->prior;
+		if (s->prior != NULL) {
+			s->prior->next = a;
+		}
+		s->prior = a;
+		r = 1;
+	}
+	else{
+		printf("前插入失败\n");
+	}
+	return r;
+}
+
+//输出链表
+void DLinkListPrint(DLinkList l) {
+	
+	
+	while (l->next != NULL) {
+		l = l->next;
+		printf("%d ", l->number);
+	}
+	printf("\n");
+	
+}
+
+//从指定位置倒序输出
+void USDDLinkListPrint(DLinkList l,int i) {
+	DNode* s;
+	if (DLinkListPosition(l, i, &s)) {
+		while (s->prior != NULL) {
+			printf("%d ", s->number);
+			s = s->prior;
+		}
+		printf("\n");
+	}
+	else {
+		printf("输入有误\n");
+	}
+}
+
+//删除指定位置，1成功，0失败
+int DLinkListDelete(DLinkList l, int i) {
+	DNode* p;
+	int r = 0;
+	if (DLinkListPosition(l, i, &p)) {
+		p->next->prior = p->prior;
+		p->prior->next = p->next;
+		free(p);
+		r = 1;
+	}
+	else {
+		printf("删除失败\n");
+	}
+
+	return r;
+}
+
+//删除整个链表
+void DeleteAll(DLinkList l) {
+	while (l->next != NULL) {
+		l = l->next;
+		free(l->prior);
+	}
+	free(l);
+
+}
+
+//按位查找
+int FindBybit(DLinkList l, int i) {
+	DNode* a;
+	DLinkListPosition(l, i, &a);
+	printf("%d\n", a->number);
+	return a->number;
+}
+
+//按值查找
+int FindByValue(DLinkList l, int i) {
+	int index=0;
+	printf("他们分别在第");
+	while (l->next != NULL) {
+		index++;
+		if (i == l->number) {
+			printf("%d ", index);
+
+		}
+		l = l->next;
+	}
+	printf("位\n");
+}
+
+int main(void) {
+	DLinkList l;
+	InitDLinkList(&l);
+	DLinkListBackInsert(l, 0, 1);
+	DLinkListPrint(l);
+	DLinkListBackInsert(l, 1, 2);
+	DLinkListPrint(l);
+	DLinkListBackInsert(l, 2, 4);
+	DLinkListPrint(l);
+	DLinkListBackInsert(l, 4, 2);
+	DLinkListPrint(l);
+	DLinkListFrontInsert(l, 2, 3);
+	DLinkListPrint(l);
+	FindBybit(l, 2);
+	FindByValue(l, 3);
+	USDDLinkListPrint(l, 4);
+	DLinkListPrint(l);
+	DLinkListDelete(l, 2);
+	DLinkListPrint(l);
+	USDDLinkListPrint(l,10);
+	
+	DeleteAll(l);
+}
